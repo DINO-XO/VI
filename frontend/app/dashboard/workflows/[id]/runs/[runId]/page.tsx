@@ -18,7 +18,7 @@ export default function WorkflowRunPage({
   const { activeMembership } = useOrg();
   const userRole = activeMembership?.role || 'viewer';
 
-  const { data, loading, error, refetch } = useSubscription(
+  const { data, loading, error } = useSubscription(
     SUBSCRIBE_STEP_RUN_STATUS,
     {
       variables: { workflow_run_id: runId },
@@ -110,9 +110,7 @@ export default function WorkflowRunPage({
               key={stepRun.id}
               stepRun={stepRun}
               userRole={userRole}
-              onApproveSuccess={() => {
-                if (refetch) refetch();
-              }}
+              onApproveSuccess={() => {}}
             />
           ))}
         </div>
