@@ -1,0 +1,47 @@
+[global]
+
+[[global.environment]]
+name = "FUNCTIONS_BASE_URL"
+value = "http://localhost:1337/v1"
+
+[hasura]
+version = "v2.40.0-ce"
+adminSecret = "nhost-admin-secret"
+webhookSecret = "nhost-webhook-secret"
+
+[[hasura.jwtSecrets]]
+type = "HS256"
+key = "0f987876650b4a085e64594fae9219e7781b17506bec02489ad061fba8cb22db"
+
+[hasura.settings]
+corsDomain = ["*"]
+devMode = true
+enableAllowList = false
+enableRemoteSchemaPermissions = false
+enableConsole = true
+liveQueriesMultiplexedRefetchInterval = 1000
+stringifyNumericTypes = false
+
+[functions]
+node = "20"
+
+[auth]
+version = "0.23.2"
+
+[auth.method.emailPassword]
+hibpEnabled = false
+emailVerificationRequired = false
+passwordMinLength = 3
+
+[auth.method.anonymous]
+enabled = false
+
+[auth.redirections]
+clientUrl = "http://localhost:3000"
+allowedUrls = ["http://localhost:3000"]
+
+[storage]
+version = "0.6.0"
+
+[postgres]
+version = "14.6-20230705-1"

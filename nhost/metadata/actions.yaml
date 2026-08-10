@@ -1,0 +1,100 @@
+---
+actions:
+  - name: triggerWorkflowRun
+    definition:
+      kind: synchronous
+      handler: "{{FUNCTIONS_BASE_URL}}/trigger-workflow-run"
+      forward_client_headers: true
+      headers: []
+    permissions:
+      - role: owner
+      - role: editor
+    comment: "Trigger a workflow run (owner/editor only — viewer rejected in handler)"
+
+  - name: triggerWorkflowRunViaWebhook
+    definition:
+      kind: synchronous
+      handler: "{{FUNCTIONS_BASE_URL}}/trigger-workflow-webhook"
+      forward_client_headers: false
+      headers: []
+    permissions:
+      - role: public
+    comment: "Webhook trigger — secret validated in handler, no auth required"
+
+  - name: approveStep
+    definition:
+      kind: synchronous
+      handler: "{{FUNCTIONS_BASE_URL}}/approve-step"
+      forward_client_headers: true
+      headers: []
+    permissions:
+      - role: owner
+      - role: editor
+    comment: "Approve a paused approval_gate step (owner/editor only)"
+
+  - name: upsertWorkflowStep
+    definition:
+      kind: synchronous
+      handler: "{{FUNCTIONS_BASE_URL}}/upsert-workflow-step"
+      forward_client_headers: true
+      headers: []
+    permissions:
+      - role: owner
+      - role: editor
+    comment: "Create/update workflow steps — Layer 2 gate for db_write/notify/webhook"
+
+custom_types:
+  enums: []
+  input_objects:
+    - name: WorkflowStepInput
+      fields:
+        - name: id
+          type: uuid
+        - name: workflow_id
+          type: uuid!
+        - name: step_order
+          type: Int!
+        - name: type
+          type: String!
+        - name: config
+          type: jsonb!
+
+    - name: WorkflowTriggerInput
+      fields:
+        - name: workflow_id
+          type: uuid!
+        - name: type
+          type: String!
+        - name: config
+          type: jsonb!
+        - name: is_active
+          type: Boolean
+
+  objects:
+    - name: TriggerWorkflowRunOutput
+      fields:
+        - name: run_id
+          type: uuid!
+        - name: status
+          type: String!
+        - name: message
+          type: String
+
+    - name: ApproveStepOutput
+      fields:
+        - name: success
+          type: Boolean!
+        - name: message
+          type: String!
+
+    - name: UpsertWorkflowStepOutput
+      fields:
+        - name: step_id
+          type: uuid!
+        - name: success
+          type: Boolean!
+
+  scalars:
+    - name: uuid
+    - name: jsonb
+    - name: timestamptz

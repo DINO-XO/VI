@@ -1,0 +1,25 @@
+type Mutation {
+  """
+  Trigger a workflow run manually. Only owner/editor roles allowed.
+  Viewer role and non-members are rejected in the handler.
+  """
+  triggerWorkflowRun(workflow_id: uuid!): TriggerWorkflowRunOutput
+
+  """
+  Trigger a workflow run via webhook. Secret validated server-side.
+  No authentication required — this is the unauthenticated webhook endpoint.
+  """
+  triggerWorkflowRunViaWebhook(workflow_id: uuid!, secret: String!): TriggerWorkflowRunOutput
+
+  """
+  Approve a paused approval_gate step. Only owner/editor allowed.
+  Resumes run from the next step.
+  """
+  approveStep(step_run_id: uuid!): ApproveStepOutput
+
+  """
+  Create or update a workflow step. Routes through handler for Layer 2 gating:
+  db_write/notify step types and webhook triggers require owner role.
+  """
+  upsertWorkflowStep(step: WorkflowStepInput!): UpsertWorkflowStepOutput
+}
