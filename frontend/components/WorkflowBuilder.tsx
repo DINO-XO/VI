@@ -5,6 +5,7 @@ import { Plus, Trash2, Webhook, Save, AlertTriangle, CheckCircle2 } from 'lucide
 
 export interface StepItem {
   id?: string;
+  workflow_id?: string;
   step_order: number;
   type: 'llm_call' | 'http_request' | 'db_write' | 'notify' | 'conditional_branch' | 'approval_gate';
   config: Record<string, any>;
