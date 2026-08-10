@@ -6,14 +6,17 @@ import { SUBSCRIBE_STEP_RUN_STATUS } from '../../../../../../lib/graphql/subscri
 import StepCard, { StepRunItem } from '../../../../../../components/StepCard';
 import { ArrowLeft, RefreshCw, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import { useOrg } from '../../../../../../lib/context/OrgContext';
 
-export default function WorkflowRunPage() {
-  const params = useParams();
-  const workflowId = params?.id as string;
-  const runId = params?.runId as string;
-  const { userRole } = useOrg();
+export default function WorkflowRunPage({
+  params,
+}: {
+  params: { id: string; runId: string };
+}) {
+  const workflowId = params.id;
+  const runId = params.runId;
+  const { activeMembership } = useOrg();
+  const userRole = activeMembership?.role || 'viewer';
 
   const { data, loading, error, refetch } = useSubscription(
     SUBSCRIBE_STEP_RUN_STATUS,
