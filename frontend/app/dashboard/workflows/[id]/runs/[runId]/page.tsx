@@ -7,15 +7,13 @@ import StepCard, { StepRunItem } from '../../../../../../components/StepCard';
 import { ArrowLeft, RefreshCw, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useOrg } from '../../../../../../lib/context/OrgContext';
 
-interface Props {
-  userRole?: 'owner' | 'editor' | 'viewer';
-}
-
-export default function WorkflowRunPage({ userRole = 'viewer' }: Props) {
+export default function WorkflowRunPage() {
   const params = useParams();
   const workflowId = params?.id as string;
   const runId = params?.runId as string;
+  const { userRole } = useOrg();
 
   const { data, loading, error, refetch } = useSubscription(
     SUBSCRIBE_STEP_RUN_STATUS,
